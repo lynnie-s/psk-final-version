@@ -685,7 +685,7 @@ function showFinalResult(){
 
 function shareResult(pName,sName){
   const text=`我剛發現一個超有趣的「一秒測出你的 PSK 防曬人格☀️」我測出來是「${pName}」，推薦色號是「${sName}」！感覺蠻準的ㅋㅋ 而且有點被燒到🤣先傳給你你也可以玩看看👇`;
-  const url='https://lynnie-s.github.io/PSK-PROTOTYPE4/';
+  const url='https://lynnie-s.github.io/psk-final-version/';
   if(navigator.share){navigator.share({title:'一秒測出你的 PSK 防曬人格 ☀️',text,url});}
   else if(navigator.clipboard){navigator.clipboard.writeText(text+'\n'+url).then(()=>alert('已複製，快去分享！'));}
 }
@@ -731,8 +731,8 @@ let popupTimer=null;
 
 function initPopup(){
   const p=popupData[pWinner]||popupData['G'];
-  const n=popupNums[Math.floor(Math.random()*popupNums.length)];
-  popupCode='PSK'+n+'TW';
+  const personaCodes={G:'PSKGUARD',R:'PSKFREE',C:'PSKLAB',E:'PSKGREEN'};
+  popupCode = personaCodes[pWinner] || 'PSKGUARD';
   // Pick product image based on result
   let popupImg = prodImgColor;
   if(window._isWhiteResult){
@@ -761,6 +761,10 @@ function initPopup(){
   const btnBot   = document.getElementById('popup-btn-bot');
 
   const shopUrl = 'https://www.psk.com.tw/categories/%E9%98%B2%E6%9B%AC%E5%BA%95%E5%A6%9D';
+  const stickUrl = 'https://www.psk.com.tw/categories/%E9%98%B2%E6%9B%AC%E5%BA%95%E5%A6%9D';
+  const creamUrl = window._isWhiteResult
+    ? 'https://www.psk.com.tw/products/long-lasting-sunscreen'
+    : 'https://www.psk.com.tw/products/physical-illuminating-suncream-single-entry';
 
   if(stickIsTop1 || bothEq){
     // TOP 1 = 防曬棒
@@ -770,10 +774,12 @@ function initPopup(){
     botLabel.textContent = '防曬隔離霜';
     btnTop.textContent = '選購光防禦防曬棒 →';
     btnTop.style.cssText += ';background:#5b8fd4;color:#fff;';
+    btnTop.onclick = function(){ window.open(stickUrl,'_blank'); };
     btnTop.onmouseover = function(){ this.style.background='#3a6ab8'; };
     btnTop.onmouseout  = function(){ this.style.background='#5b8fd4'; };
     btnBot.textContent = '選購防曬隔離霜 →';
     btnBot.style.cssText += ';background:#c47000;color:#fff;';
+    btnBot.onclick = function(){ window.open(creamUrl,'_blank'); };
     btnBot.onmouseover = function(){ this.style.background='#a35800'; };
     btnBot.onmouseout  = function(){ this.style.background='#c47000'; };
   } else {
@@ -784,10 +790,12 @@ function initPopup(){
     botLabel.textContent = '防曬棒';
     btnTop.textContent = '選購防曬隔離霜 →';
     btnTop.style.cssText += ';background:#c47000;color:#fff;';
+    btnTop.onclick = function(){ window.open(creamUrl,'_blank'); };
     btnTop.onmouseover = function(){ this.style.background='#a35800'; };
     btnTop.onmouseout  = function(){ this.style.background='#c47000'; };
     btnBot.textContent = '選購光防禦防曬棒 →';
     btnBot.style.cssText += ';background:#5b8fd4;color:#fff;';
+    btnBot.onclick = function(){ window.open(stickUrl,'_blank'); };
     btnBot.onmouseover = function(){ this.style.background='#3a6ab8'; };
     btnBot.onmouseout  = function(){ this.style.background='#5b8fd4'; };
   }
