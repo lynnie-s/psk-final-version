@@ -535,6 +535,7 @@ function calcPersonality(){
 }
 
 function showWhiteResult(){
+  submitToAPI(pWinner, 'white');
   window._isWhiteResult=true;
   showPopupAfterDelay();
   document.getElementById('s-quiz').style.display='none';
@@ -616,6 +617,7 @@ function showFinalResult(){
   const r=pResults[pWinner];
   const shadeKeyMap={b:'bright',n:'natural',h:'healthy'};
   window.shadeWinner=shadeKeyMap[Object.keys(sScore).reduce((a,b)=>sScore[a]>=sScore[b]?a:b)];
+  submitToAPI(pWinner, window.shadeWinner);
   const sr=shadeResults[shadeWinner];
   const trHTML=r.traits.map(t=>`<span class="trait">${t}</span>`).join('');
   const swatchHTML=sr.swatches.map(c=>`<div class="shade-swatch" style="background:${c};"></div>`).join('');
@@ -931,5 +933,21 @@ var stickTags={
     <div style="font-size:13px;font-weight:800;color:#fff;text-align:center;line-height:1.4;letter-spacing:0.05em;">折扣碼<br>一鍵領</div>
   </div>
 </div>
+
+<script>
+const PSK_API = 'https://psk-vercel.vercel.app';
+const personaCodes = {G:'PSKGUARD', R:'PSKFREE', C:'PSKLAB', E:'PSKGREEN'};
+async function submitToAPI(personality, shade) {
+  try {
+    const coupon = personaCodes[personality] || '';
+    await fetch(PSK_API + '/api/responses', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({personality, shade, answers: pAnswers, coupon})
+    });
+  } catch(e) {}
+}
+</script>
+
 </body>
 </html>
